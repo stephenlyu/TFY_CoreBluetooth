@@ -127,23 +127,10 @@
     
     CBCharacteristicWriteType writeType = callback ? CBCharacteristicWriteWithResponse : CBCharacteristicWriteWithoutResponse ;
     NSLog(@"data.length====%ld",data.length);
-    for (int i = 0; i < data.length; i+=20) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        dispatch_queue_t currentQueue = dispatch_get_current_queue() ;
-#pragma clang diagnostic pop
-
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((i/20)*0.2 * NSEC_PER_SEC)), currentQueue, ^{
-
-            NSUInteger subLength = data.length - i > 20 ? 20 : data.length-i ;
-            NSData *subData = [data subdataWithRange:NSMakeRange(i, subLength)];
-            
-            Blue_EasyLog_S(@"往特征上写数据 %@ %@",self.characteristic.UUID,subData);
-            [self.peripheral.peripheral writeValue:subData
-                                 forCharacteristic:self.characteristic
-                                              type:writeType];
-        });
-    }
+    Blue_EasyLog_S(@"往特征上写数据 %@ %@",self.characteristic.UUID,data);
+    [self.peripheral.peripheral writeValue:data
+                         forCharacteristic:self.characteristic
+                                      type:writeType];
 }
 //#warning ====需要一个写入队列
 - (void)readValueWithCallback:(blueToothCharactersticOperateCallback)callback
