@@ -49,13 +49,6 @@
         
         _connectTimeOut = 5 ;
         _isReconnectDevice = YES ;
-        
-        Blue_kWeakSelf(self)
-        Blue_queueMainStart
-        [weakself performSelector:@selector(devicenotFoundTimeout)
-                       withObject:nil
-                       afterDelay:5.0f];
-        Blue_queueEnd
     }
     return self ;
 }
