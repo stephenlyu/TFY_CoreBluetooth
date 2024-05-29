@@ -128,9 +128,11 @@
     CBCharacteristicWriteType writeType = callback ? CBCharacteristicWriteWithResponse : CBCharacteristicWriteWithoutResponse ;
     NSLog(@"data.length====%ld",data.length);
     Blue_EasyLog_S(@"往特征上写数据 %@ %@",self.characteristic.UUID,data);
-    [self.peripheral.peripheral writeValue:data
-                         forCharacteristic:self.characteristic
-                                      type:writeType];
+    if (self.peripheral.peripheral.state == CBPeripheralStateConnected) {
+        [self.peripheral.peripheral writeValue:data
+                             forCharacteristic:self.characteristic
+                                          type:writeType];
+    }
 }
 //#warning ====需要一个写入队列
 - (void)readValueWithCallback:(blueToothCharactersticOperateCallback)callback
